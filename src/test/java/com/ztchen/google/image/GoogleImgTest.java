@@ -8,9 +8,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 
 public class GoogleImgTest
@@ -18,13 +19,13 @@ public class GoogleImgTest
 	public static void main(String[] args) 
 	{
 		List<String> responseList = new ArrayList<String>();
-		HttpURLConnection conn = null;
+		HttpsURLConnection conn = null;
 		InputStream is = null;
 		InputStreamReader isr = null;
 		BufferedReader br = null;
 		StringBuffer sb = null;
 		
-		for(int i = 0; i < 10; i++)
+		for(int i = 0; i < 1; i++)
 		{
 			String str = "https://www.googleapis.com/customsearch/v1?key=AIzaSyDH8LEAZOjX5xoyRpySBezTMAPyyzvU84U&cx=001092378821530568921:6vxzfitcm3k&q=macbook&alt=json&searchType=image&imgSize=large&";
 			
@@ -35,9 +36,10 @@ public class GoogleImgTest
 			try
 			{
 				URL url = new URL(str);
-				conn = (HttpURLConnection) url.openConnection();
+				conn = (HttpsURLConnection) url.openConnection();
 				//HttpsURLConnection conn = (HttpsURLConnection) new URL(str).openConnection();
-				((HttpURLConnection) conn).setRequestMethod("GET");
+				//((HttpURLConnection) conn).setRequestMethod("GET");
+				conn.setRequestMethod("GET");
 				
 				int responseCode = conn.getResponseCode();
 				

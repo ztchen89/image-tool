@@ -40,7 +40,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				
     					//$("#pic").append(html);
     				//alert(src);
-    				alert(jQuery.parseJSON(returnedData));
+    				alert(returnedData);
     			});
     		});
     	});
