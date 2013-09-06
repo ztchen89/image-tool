@@ -9,7 +9,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <title>JSON/Atom Custom Search API Example</title>
     <script type="text/javascript" src="js/jquery-1.6.4.js"></script>
+    <style type="text/css">
     
+    ul{list-style-type:none; margin:0;width:100%; }
+	ul li{ width:200px; float:left;}
+    
+    
+    </style>
     <script type="text/javascript">
     	/*
     	function hndlr(response) 
@@ -27,20 +33,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	{
     		$("#btn").click(function()
     		{
-    			$.get("https://www.googleapis.com/customsearch/v1?key=AIzaSyDH8LEAZOjX5xoyRpySBezTMAPyyzvU84U&cx=001092378821530568921:6vxzfitcm3k", {q: $("#keyword").val()}, 
+    			$.get("https://www.googleapis.com/customsearch/v1?key=AIzaSyDH8LEAZOjX5xoyRpySBezTMAPyyzvU84U&cx=001092378821530568921:6vxzfitcm3k&alt=json&searchType=image&imgSize=large", {q: $("#keyword").val()}, 
     			function(returnedData, status)
     			{
-    				//var item = $(returnedData).find("items")[0];
-    					//var item = returnedData.items[0];
-    				//var link = item.link;
-	    				//var pagemap = item.pagemap;
-	    				//var src = pagemap.cse_image[0].src;
-	    				//var html = "<img src=\"" + src +"\"" + " alt=\"macbook\"" + " width=\"135\"" + " height=\"135\""+">";
-    				//alert(html);
     				
-    					//$("#pic").append(html);
-    				//alert(src);
-    				alert(returnedData);
+    				$("div[id=pic] > ul").empty();
+					var html = "";
+					
+					for(var i = 0; i < 10; i++)
+					{
+						var link = returnedData.items[i].link;
+						//var title = returnedData.items[i].title;
+						html += "<li><a href='" + link +"' target='_blank'>" + "<img src='" + link + "' width='180' height='150' />" + "</a>" + "</li>";
+					}
+					
+					//alert(html);
+					/*
+    				for ( var i = 0; i < returnedData.length; i++) 
+    				{
+    					var link = returnedData.items[i].link;
+
+    					html += "<img src=\"" + link +"\"" + " alt=\"macbook\"" + " width=\"135\"" + " height=\"135\""+">";
+					}
+    				
+    				alert(html);*/
+    				
+    				$("div[id=pic] > ul").append(html);
     			});
     		});
     	});
@@ -48,23 +66,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	
     </script>
     
-
     
-    
-    
-    <!-- 
-    <script src="https://www.googleapis.com/customsearch/v1?key=AIzaSyDH8LEAZOjX5xoyRpySBezTMAPyyzvU84U&cx=017576662512468239146:omuauf_lfve&q=macbook&searchType=image&callback=hndlr">
-    </script>
-    <script src="https://www.googleapis.com/customsearch/v1?key=AIzaSyDH8LEAZOjX5xoyRpySBezTMAPyyzvU84U&cx=013036536707430787589:_pqjad5hr1a&q=flowers&alt=json">
-    </script>
-     -->
      
   </head>
   <body>
 
 	<input type="text" id="keyword" value="mac" /><input type="button" value="get from google json" id="btn" />
 	
-	<dir id="pic"></dir>
+	<div id="pic" style="height: 2380px;">
+		<ul id="list"></ul>
+	</div>
 	
   </body>
 </html>
