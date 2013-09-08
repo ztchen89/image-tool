@@ -10,7 +10,7 @@
 <script type="text/javascript">
 	$(function()
 	{
-		$("#btn").click(function()
+		$("#search_btn").click(function()
 		{
 			
 			$.get("GetImagesServlet", 
@@ -32,6 +32,23 @@
 				$("#showImage").append(html);
 			});
 		});
+		
+		$("#btn").click(function()
+		{
+			//alert(img);
+			//$("#load").html("<img src='img/loading.gif' alt='loading...' height='20'>");
+			
+			$.post("SaveImagesServlet", {}, 
+			function(returnedData, status)
+			{
+				alert(returnedData);					
+			});
+			
+			//$("#load").empty();
+		});
+		
+		
+		
 	});
 
 
@@ -44,9 +61,10 @@
 	<input type="radio" name="imageSource" value="google" checked="checked" />google
 	<input type="radio" name="imageSource" value="flickr" />flickr
 	<input type="text" id="keyword" value="macbook" />
-	<input type="button" value="search" id="btn" />
-	<input type="button" value="save" id="save_btn" />
-
+	<input type="button" value="search" id="search_btn" />
+	<input type="button" value="save" id="btn" />
+	
+	<div id="load"></div>
 	<div id="showImage"></div>
 </body>
 </html>

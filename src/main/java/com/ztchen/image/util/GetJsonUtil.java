@@ -1,9 +1,13 @@
 package com.ztchen.image.util;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
@@ -106,6 +110,58 @@ public class GetJsonUtil
 		}
 	}
 	
-	
+	public static void writeToLocal(String imageUrl, File file)
+	{
+		InputStream is = null;
+		OutputStream os = null;
+		
+		try
+		{
+			URL url = new URL(imageUrl);
+			is = url.openStream();
+			
+			os = new FileOutputStream(file);
+			
+			int length = -1;
+			byte[] buffer = new byte[8192];
+			
+			while(-1 != (length = is.read(buffer, 0, 8192)))
+			{
+				os.write(buffer, 0, length);
+			}
+			
+		} catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		} catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}finally{
+			try
+			{
+				if(null != is)
+				{
+					is.close();
+				}
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			
+			try
+			{
+				if(null != os)
+				{
+					os.close();
+				}
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 
+	}
 }

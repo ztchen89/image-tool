@@ -27,7 +27,7 @@ public class SavaImagesThread extends Thread
 				
 				File file = new File(dir, imageName);
 				
-				GetJsonUtil.write2Local(url, file);
+				GetJsonUtil.writeToLocal(url, file);
 			}
 			
 			long end = System.currentTimeMillis();

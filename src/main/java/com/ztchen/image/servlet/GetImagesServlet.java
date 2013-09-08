@@ -9,6 +9,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,16 +29,64 @@ public class GetImagesServlet extends HttpServlet
 	{
 		String keyword = req.getParameter("keyword");
 		String imageSource = req.getParameter("imageSource");
+		//存放解析完的图片的url
 		List<String> imageUrls = new ArrayList<String>();
+		
+		//将获取的url的imageUrls存储到session中
+		HttpSession session = req.getSession();
+		session.setAttribute("keyword", keyword);
+		session.setAttribute("imageSource", imageSource);
+		session.setAttribute("images", imageUrls);
+		
+		
 
 		if ("google".equals(imageSource))
 		{
 			handlerGoogle(keyword, imageUrls);
 		} else
 		{
-			handleFlickr(keyword, imageUrls);
+			//handleFlickr(keyword, imageUrls);
+			try
+			{
+				String url_flickr = UrlConstant.FLICKR_URL + keyword;
+				System.out.println(url_flickr);
+
+				String resutl_flickr = GetJsonUtil.getJsonResult(url_flickr);
+
+				resutl_flickr = resutl_flickr.substring(14,
+						resutl_flickr.length() - 1);
+
+				JSONObject flickr_json = new JSONObject(resutl_flickr);
+
+				JSONObject jsonObj = flickr_json.getJSONObject("photos");
+
+				JSONArray jsonArray = jsonObj.getJSONArray("photo");
+
+				for (int i = 0; i < jsonArray.length(); i++)
+				{
+					JSONObject obj = jsonArray.getJSONObject(i);
+
+					int farm = obj.getInt("farm");
+					String server = obj.getString("server");
+					String id = obj.getString("id");
+					String secret = obj.getString("secret");
+
+					// http://farm{farm-id}.staticflickr.com/{server-id}/{id}_{secret}.jpg
+					String imageUrl = "http://farm" + farm + ".staticflickr.com/"
+							+ server + "/" + id + "_" + secret + ".jpg";
+					// System.out.println(imageUrl);
+
+					imageUrls.add(imageUrl);
+
+				}
+			} catch (JSONException e)
+			{
+				e.printStackTrace();
+			}
 		}
 
+		
+		//将urls构造成json格式返回给浏览器
 		Gson gson = new Gson();
 		String returnedUrls = gson.toJson(imageUrls);
 
@@ -50,6 +99,10 @@ public class GetImagesServlet extends HttpServlet
 		out.flush();
 	}
 
+	/*
+	 * 处理flickr图片搜索请求
+	 */
+	/*
 	private void handleFlickr(String keyword, List<String> imageUrls)
 	{
 		try
@@ -90,7 +143,11 @@ public class GetImagesServlet extends HttpServlet
 			e.printStackTrace();
 		}
 	}
-
+	*/
+	
+	/*
+	 * 处理google图片搜索请求
+	 */
 	private void handlerGoogle(String keyword, List<String> imageUrls)
 	{
 		try

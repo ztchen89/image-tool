@@ -19,4 +19,14 @@
     <servlet-name>GetImagesServlet</servlet-name>
     <url-pattern>/GetImagesServlet</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <description></description>
+    <display-name>SaveImagesServlet</display-name>
+    <servlet-name>SaveImagesServlet</servlet-name>
+    <servlet-class>com.ztchen.image.servlet.SaveImagesServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SaveImagesServlet</servlet-name>
+    <url-pattern>/SaveImagesServlet</url-pattern>
+  </servlet-mapping>
 </web-app>
